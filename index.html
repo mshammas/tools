@@ -53,6 +53,10 @@
             height: 100vh;
             background-color: #f8f9fa;
         }
+        .button-container {
+            display: flex;
+            gap: 15px; /* Space between buttons */
+        }	    
         button {
             font-size: 20px;
             padding: 15px 30px;
@@ -61,7 +65,7 @@
             color: white;
             border-radius: 8px;
             cursor: pointer;
-        }
+        }	    
         button:hover {
             background-color: #357ae8;
         }
@@ -73,9 +77,10 @@
 </head>
 <body>
 	<h1 style="margin-bottom: 20px;">Welcome to Tools - Shammas Oliyath</h1> 
-	<br><br>
-    	<button onclick="hexCalculator()">Hex Calculator</button>
-	<button onclick="DNSLookup()">DNS Lookup</button>
-	
+	<div class="button-container">
+    		<button onclick="hexCalculator()">Hex Calculator</button>
+		<button onclick="DNSLookup()">DNS Lookup</button>
+	</div>
+</body>
 </html>
 
