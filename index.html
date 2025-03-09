@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hex Calculator PWA</title>
+    <link rel="manifest" href="manifest.json">
+    <script>
+      if ("serviceWorker" in navigator) {
+	navigator.serviceWorker.register("service-worker.js")
+	  .then(() => console.log("Service Worker Registered"))
+	  .catch((error) => console.log("Service Worker Registration Failed", error));
+
+        function hexCalculator() {
+            window.location.href = "https://chatgpt.com/g/g-67cced6566208191a09579bf2dce06e8-hexadecimal-calculator";
+        }
+      }
+    </script>
+    <script>
+      let deferredPrompt;
+      window.addEventListener("beforeinstallprompt", (event) => {
+	event.preventDefault();
+	deferredPrompt = event;
+	document.getElementById("install-btn").style.display = "block";
+      });
+
+      function installApp() {
+	if (deferredPrompt) {
+	  deferredPrompt.prompt();
+	  deferredPrompt.userChoice.then((choiceResult) => {
+	    if (choiceResult.outcome === "accepted") {
+	      console.log("PWA Installed");
+	    } else {
+	      console.log("PWA Installation Cancelled");
+	    }
+	    deferredPrompt = null;
+	  });
+	}
+      }
+    </script>
+    <button id="install-btn" onclick="installApp()" style="display:none;">Install App</button>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+        button {
+            font-size: 20px;
+            padding: 15px 30px;
+            border: none;
+            background-color: #4285F4;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #357ae8;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="hexCalculator()">Hex Calculator</button>
+</body>
+</html>
+
