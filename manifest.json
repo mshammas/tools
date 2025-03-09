@@ -1,6 +1,6 @@
 {
-  "name": "Hex Calculator PWA",
-  "short_name": "Hex Calculator",
+  "name": "Tools PWA - Shammas Oliyath",
+  "short_name": "Tools",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
