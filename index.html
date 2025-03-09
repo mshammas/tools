@@ -68,10 +68,22 @@
             color: white;
             border-radius: 8px;
             cursor: pointer;
+	    width: 180px;
         }	    
         button:hover {
             background-color: #357ae8;
         }
+        /* Responsive Design: Stack buttons in column for small screens */
+        @media (max-width: 768px) {
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            button {
+                width: 100%; /* Make buttons take full width on mobile */
+                max-width: 250px; /* Limit button width */
+            }
+        }	    
 	h1 {
             color: #333;
 	    margin-bottom: 20px;
