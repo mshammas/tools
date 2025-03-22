@@ -107,6 +107,12 @@
 	    text-align: center;
 	    width: 100%;
         }
+	.button-container {
+    		display: flex;
+    		flex-wrap: wrap; /* This enables wrapping */
+ 		gap: 15px; /* Space between buttons */
+    		justify-content: center; /* Optional: center buttons in the row */
+	}
     </style>
 </head>
 <body>
@@ -117,8 +123,6 @@
 		<button onclick="unixTimeStamp()">Unix Timestamp Converter</button>	
 		<button onclick="stringEncodings()">String Encodings</button>	
 		<button onclick="currencyConverter()">Currency Converter</button>	
-	</div>
-	<div class="button-container">
 		<button onclick="globalTime()">Global Time</button>				
 		<button onclick="lunarCalendar()">Lunar Calendar</button>						
 		<button onclick="temperature()">Weather</button>	
