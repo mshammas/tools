@@ -170,9 +170,16 @@
     }   
   </style>
 </head>
-<body>
-  <button class="toggle-dark-mode" onclick="toggleDarkMode()">Toggle Dark Mode</button>
-  <h1>Welcome to Tools - Shammas Oliyath</h1>
+  <body>
+  <header style="padding: 1.5rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: var(--card-background); display: flex; justify-content: space-between; align-items: center;">
+    <a href="index.html" style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.5rem; font-weight: bold; color: var(--text-color); text-decoration: none;">
+      <img src="images/profile.jpg" alt="Profile" style="width: 40px; height: 40px; border-radius: 9999px; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
+      <span>Shammas Oliyath</span>
+    </a>
+    <button class="toggle-dark-mode" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+  </header>  
+<!--  <button class="toggle-dark-mode" onclick="toggleDarkMode()">Toggle Dark Mode</button> -->
+  <h1>Welcome to AI Tools</h1>
 
   <div class="tabs">
     <button class="tab-button active" onclick="showTab('engineering')">Engineering</button>
