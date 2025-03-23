@@ -5,49 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Contact Us - Shammas Oliyath</title>
   <style>
-    body {
+    html, body {
+      height: 100%;
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f4f4;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
     }
 
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    iframe {
+      flex: 1;
+      width: 100%;
+      border: none;
+    }
     header {
       background-color: #4285F4;
       color: white;
       padding: 20px;
       text-align: center;
     }
-
-    .container {
-      flex: 1;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      border-radius: 0;
-      background: white;
-      box-shadow: none;
-    }
-
-    iframe {
-      width: 100%;
-      height: 700px;
-      border: none;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        margin: 15px;
-        padding: 15px;
-      }
-      iframe {
-        height: 900px; /* more space for mobile form view */
-      }
-    }
-
+    
     footer {
       text-align: center;
       padding: 15px;
@@ -61,14 +41,13 @@
     <h1>Contact Us</h1>
     <p>I will love to hear from you. Please fill out the form below.</p>
   </header>
-
-<div class="container">
-  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScDj3VDCVJ7mEqTS_123uECl9qFQQuarT5KTG0c3AYZP5nnLw/viewform?embedded=true"
+  <main>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScDj3VDCVJ7mEqTS_123uECl9qFQQuarT5KTG0c3AYZP5nnLw/viewform?embedded=true"
     style="width: 100vw; height: 100vh; border: none;" 
     frameborder="0" marginheight="0" marginwidth="0">
     Loading…
-  </iframe>
-</div>
+    </iframe>
+  </main>
 
   <footer>
     &copy; 2025 Shammas Oliyath. All rights reserved.
