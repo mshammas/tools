@@ -62,19 +62,23 @@
     .tabs {
       display: flex;
       justify-content: center;
-      margin-bottom: 20px;
-      gap: 10px;
       flex-wrap: wrap;
+      gap: 10px;
+      padding: 0 15px; /* Add horizontal spacing */
+      margin-bottom: 20px;
+      box-sizing: border-box;
     }
-
+    
     .tab-button {
       background-color: transparent;
       border: 2px solid var(--primary-color);
       color: var(--primary-color);
-      padding: 8px 20px;
+      padding: 8px 14px; /* Slightly narrower for better fit */
+      min-width: 100px;
       border-radius: 20px;
       cursor: pointer;
       transition: all 0.3s ease;
+      flex: 1 0 auto; /* Allow it to shrink and wrap properly */
     }
 
     .tab-button.active, .tab-button:hover {
@@ -157,6 +161,12 @@
       z-index: 100;
       box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     }
+    @media (max-width: 480px) {
+      .tab-button {
+        font-size: 14px;
+        padding: 6px 12px;
+      }
+    }    
   </style>
 </head>
 <body>
