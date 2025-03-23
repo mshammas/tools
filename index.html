@@ -64,7 +64,7 @@
       justify-content: center;
       flex-wrap: wrap;
       gap: 10px;
-      padding: 0 15px; /* Add horizontal spacing */
+      padding: 0 10px;
       margin-bottom: 20px;
       box-sizing: border-box;
     }
@@ -73,12 +73,13 @@
       background-color: transparent;
       border: 2px solid var(--primary-color);
       color: var(--primary-color);
-      padding: 8px 14px; /* Slightly narrower for better fit */
-      min-width: 50px;
+      padding: 6px 16px; /* Smaller padding */
+      font-size: 14px; /* Smaller font */
       border-radius: 20px;
       cursor: pointer;
       transition: all 0.3s ease;
-      flex: 1 0 auto; /* Allow it to shrink and wrap properly */
+      flex: 0 0 auto; /* Prevent auto-stretching */
+      white-space: nowrap; /* Prevent breaking in middle */
     }
 
     .tab-button.active, .tab-button:hover {
@@ -163,10 +164,10 @@
     }
     @media (max-width: 480px) {
       .tab-button {
-        font-size: 14px;
-        padding: 6px 12px;
+        font-size: 13px;
+        padding: 5px 12px;
       }
-    }    
+    }   
   </style>
 </head>
 <body>
