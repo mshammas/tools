@@ -17,10 +17,30 @@
       color: white;
       padding: 20px;
       text-align: center;
+      position: relative;
+    }
+
+    .home-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: white;
+      color: #4285F4;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .home-button:hover {
+      background-color: #e0e0e0;
     }
 
     main {
-      flex: 1; /* take up all remaining space */
+      flex: 1;
       display: flex;
     }
 
@@ -41,6 +61,7 @@
 </head>
 <body>
   <header>
+    <a class="home-button" href="/index.html">Home</a>
     <h1>Contact Me</h1>
     <p>I will love to hear from you. Please fill out the form below.</p>
   </header>
