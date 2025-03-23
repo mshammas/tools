@@ -1,165 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tools PWA</title>
-    <link rel="manifest" href="manifest.json">
-    <script>
-      if ("serviceWorker" in navigator) {
-	navigator.serviceWorker.register("service-worker.js")
-	  .then(() => console.log("Service Worker Registered"))
-	  .catch((error) => console.log("Service Worker Registration Failed", error));
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tools - Shammas Oliyath</title>
+  <link rel="manifest" href="manifest.json">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- Font Awesome -->
+  <style>
+    :root {
+      --primary-color: #4285F4;
+      --hover-color: #357ae8;
+      --background: #f8f9fa;
+      --text-color: #333;
+      --card-background: #fff;
+    }
 
-        function hexCalculator() {
-            window.location.href = "https://chatgpt.com/g/g-67cced6566208191a09579bf2dce06e8-hexadecimal-calculator";
-        }
-	function DNSLookup() {
-            window.location.href = "https://chatgpt.com/g/g-67cda8172e4481919f5fb6d5ec6bff31-dns-lookup";
-        }
-	function unixTimeStamp() {
-            window.location.href = "https://chatgpt.com/g/g-67cdb2c7fcbc8191b9bbc2d9ad8679b2-unix-timestamp-converter";
-        }
-	function stringEncodings() {
-            window.location.href = "https://chatgpt.com/g/g-67cdb88247588191acbdc673bfff6ff7-character-encoding";
-        }
-	function currencyConverter() {
-            window.location.href = "https://chatgpt.com/g/g-67cdc066d1288191a43bd061a7db8ce9-currency-converter";
-        }
-	function globalTime() {
-            window.location.href = "https://chatgpt.com/g/g-67cdcf6b291481918c27e7543e3ef55e-global-time-assistant";
-        }	      
-	function lunarCalendar() {
-            window.location.href = "https://chatgpt.com/g/g-67cdd3dc69208191bd8694e7c92db2c3-lunar-calendar-converter";
-        }	      
-	function temperature() {
-            window.location.href = "https://chatgpt.com/g/g-67cdda703ea881919cee0e53f4a2ba1d-weather";
-        }	      	      
-	function research() {
-            window.location.href = "https://chatgpt.com/g/g-67de11fe04a08191895f4603d973e16f-research-draft";
-        }	
-	function factCheck() {
-            window.location.href = "https://chatgpt.com/g/g-67dfa0b4049c81918bd2aff29d98969f-factcheck";
-        }	
-      }
-    </script>
-    <script>
-      let deferredPrompt;
-      window.addEventListener("beforeinstallprompt", (event) => {
-	event.preventDefault();
-	deferredPrompt = event;
-	document.getElementById("install-btn").style.display = "block";
-      });
+    [data-theme="dark"] {
+      --primary-color: #90caf9;
+      --hover-color: #64b5f6;
+      --background: #121212;
+      --text-color: #eee;
+      --card-background: #1e1e1e;
+    }
 
-      function installApp() {
-	if (deferredPrompt) {
-	  deferredPrompt.prompt();
-	  deferredPrompt.userChoice.then((choiceResult) => {
-	    if (choiceResult.outcome === "accepted") {
-	      console.log("PWA Installed");
-	    } else {
-	      console.log("PWA Installation Cancelled");
-	    }
-	    deferredPrompt = null;
-	  });
-	}
-      }
-    </script>
-    <button id="install-btn" onclick="installApp()" style="display:none;">Install App</button>
-    <style>
-        body {
-            display: flex;
-	    flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            height: 100vh;
-            background-color: #f8f9fa;
-        }
-        .button-container {
-            display: flex;
-            gap: 15px; /* Space between buttons */
-        }	    
-        button {
-            font-size: 20px;
-            padding: 15px 30px;
-            border: none;
-            background-color: #4285F4;
-            color: white;
-            border-radius: 8px;
-            cursor: pointer;
-	    width: 180px;
-        }	    
-        button:hover {
-            background-color: #357ae8;
-        }
-        /* Responsive Design: Stack buttons in column for small screens */
-        @media (max-width: 768px) {
-            .button-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            button {
-                width: 100%; /* Make buttons take full width on mobile */
-                max-width: 250px; /* Limit button width */
-            }
-        }	    
-	h1 {
-            color: #333;
-	    margin-top: 40px;
-	    margin-bottom: 60px;
-	    text-align: center;
-	    width: 100%;
-        }
-	.button-container {
-    		display: flex;
-    		flex-wrap: wrap; /* This enables wrapping */
- 		gap: 15px; /* Space between buttons */
-    		justify-content: center; /* Optional: center buttons in the row */
-	}
-	footer a {
-  	text-decoration: none;
-  	color: #007bff;
-	}
-	footer a:hover {
-  	text-decoration: underline;
-	}	    
-    </style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--background);
+      color: var(--text-color);
+      transition: background-color 0.4s ease, color 0.4s ease;
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    .toggle-dark-mode {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    h1 {
+      margin: 60px 20px 20px;
+      font-size: 2rem;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      background-color: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: 8px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tab-button.active, .tab-button:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    button.tool {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 15px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    button.tool:hover {
+      background-color: var(--hover-color);
+    }
+
+    footer {
+      margin-top: auto;
+      background-color: #eee;
+      padding: 20px 0;
+      font-size: 14px;
+      border-top: 1px solid #ccc;
+    }
+
+    footer nav a {
+      margin: 0 10px;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    footer nav a:hover {
+      text-decoration: underline;
+    }
+
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 20px;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      display: none;
+      z-index: 100;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+  </style>
 </head>
 <body>
-	<h1>Welcome to Tools - Shammas Oliyath</h1> 
-		<h2>Engineering</h2> 
-			<div class="button-container">
-    				<button onclick="hexCalculator()">Hex Calculator</button>
-				<button onclick="DNSLookup()">DNS Lookup</button>
-				<button onclick="unixTimeStamp()">Unix Timestamp Converter</button>	
-				<button onclick="stringEncodings()">String Encodings</button>	
-			</div>
+  <button class="toggle-dark-mode" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+  <h1>Welcome to Tools - Shammas Oliyath</h1>
 
-		<h2>Research</h2> 
-			<div class="button-container">
-				<button onclick="research()">Research Draft</button>	
-				<button onclick="factCheck()">Fact Check</button>			
-			</div>
+  <div class="tabs">
+    <button class="tab-button active" onclick="showTab('engineering')">Engineering</button>
+    <button class="tab-button" onclick="showTab('research')">Research</button>
+    <button class="tab-button" onclick="showTab('daily')">Daily</button>
+  </div>
 
-		<h2>Daily</h2> 
-			<div class="button-container">
-				<button onclick="currencyConverter()">Currency Converter</button>	
-				<button onclick="globalTime()">Global Time</button>				
-				<button onclick="lunarCalendar()">Lunar Calendar</button>						
-				<button onclick="temperature()">Weather</button>					
-			</div>
-	<div><br><br></div>
-	
-  <footer style="background-color:#f8f9fa; padding: 20px 0; text-align: center; border-top: 1px solid #ddd;">
-    <div class="container">
-      <p>&copy; 2025 Shammas Oliyath. All rights reserved.</p>
-      <nav>
-        <a href="privacy-policy.html" style="margin: 0 10px;">Privacy Policy</a>
-        <a href="terms.html" style="margin: 0 10px;">Terms of Service</a>
-        <a href="contact.html" style="margin: 0 10px;">Contact</a>
-      </nav>
+  <div id="engineering" class="tab-content active">
+    <div class="button-grid">
+      <button class="tool" onclick="hexCalculator()"><i class="fas fa-calculator"></i>Hex</button>
+      <button class="tool" onclick="DNSLookup()"><i class="fas fa-globe"></i>DNS</button>
+      <button class="tool" onclick="unixTimeStamp()"><i class="fas fa-clock"></i>Timestamp</button>
+      <button class="tool" onclick="stringEncodings()"><i class="fas fa-code"></i>Encoding</button>
     </div>
-  </footer>	
+  </div>
+
+  <div id="research" class="tab-content">
+    <div class="button-grid">
+      <button class="tool" onclick="research()"><i class="fas fa-search"></i>Research</button>
+      <button class="tool" onclick="factCheck()"><i class="fas fa-check-circle"></i>Fact Check</button>
+    </div>
+  </div>
+
+  <div id="daily" class="tab-content">
+    <div class="button-grid">
+      <button class="tool" onclick="currencyConverter()"><i class="fas fa-dollar-sign"></i>Currency</button>
+      <button class="tool" onclick="globalTime()"><i class="fas fa-clock"></i>Time</button>
+      <button class="tool" onclick="lunarCalendar()"><i class="fas fa-moon"></i>Lunar</button>
+      <button class="tool" onclick="temperature()"><i class="fas fa-thermometer-half"></i>Weather</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Shammas Oliyath. All rights reserved.</p>
+    <nav>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </footer>
+
+  <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">&#8679;</button>
+
+  <script>
+    function toggleDarkMode() {
+      const html = document.documentElement;
+      html.dataset.theme = html.dataset.theme === "dark" ? "light" : "dark";
+    }
+
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    window.addEventListener('scroll', function () {
+      document.getElementById('backToTop').style.display = window.scrollY > 200 ? 'block' : 'none';
+    });
+
+    function hexCalculator() { window.location.href = "https://chatgpt.com/g/g-67cced6566208191a09579bf2dce06e8-hexadecimal-calculator"; }
+    function DNSLookup() { window.location.href = "https://chatgpt.com/g/g-67cda8172e4481919f5fb6d5ec6bff31-dns-lookup"; }
+    function unixTimeStamp() { window.location.href = "https://chatgpt.com/g/g-67cdb2c7fcbc8191b9bbc2d9ad8679b2-unix-timestamp-converter"; }
+    function stringEncodings() { window.location.href = "https://chatgpt.com/g/g-67cdb88247588191acbdc673bfff6ff7-character-encoding"; }
+    function currencyConverter() { window.location.href = "https://chatgpt.com/g/g-67cdc066d1288191a43bd061a7db8ce9-currency-converter"; }
+    function globalTime() { window.location.href = "https://chatgpt.com/g/g-67cdcf6b291481918c27e7543e3ef55e-global-time-assistant"; }
+    function lunarCalendar() { window.location.href = "https://chatgpt.com/g/g-67cdd3dc69208191bd8694e7c92db2c3-lunar-calendar-converter"; }
+    function temperature() { window.location.href = "https://chatgpt.com/g/g-67cdda703ea881919cee0e53f4a2ba1d-weather"; }
+    function research() { window.location.href = "https://chatgpt.com/g/g-67de11fe04a08191895f4603d973e16f-research-draft"; }
+    function factCheck() { window.location.href = "https://chatgpt.com/g/g-67dfa0b4049c81918bd2aff29d98969f-factcheck"; }
+  </script>
 </body>
 </html>
-
