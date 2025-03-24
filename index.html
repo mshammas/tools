@@ -1,31 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2ZNW1FKGM0"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Tools by Shammas Oliyath</title>
+
+  <!-- Meta SEO -->
+  <meta name="description" content="Explore a collection of useful AI-powered tools for engineering, research, learning, and daily productivity curated by Shammas Oliyath." />
+  <meta name="author" content="Shammas Oliyath" />
+  <link rel="canonical" href="https://tools.shammas.in/" />
+
+  <!-- Open Graph / Social Meta -->
+  <meta property="og:title" content="AI Tools by Shammas Oliyath" />
+  <meta property="og:description" content="Explore a collection of useful AI-powered tools for engineering, research, learning, and daily productivity." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tools.shammas.in/" />
+  <meta property="og:image" content="https://shammas.in/images/profile.jpg" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AI Tools by Shammas Oliyath" />
+  <meta name="twitter:description" content="Explore a collection of useful AI-powered tools curated by Shammas." />
+  <meta name="twitter:image" content="https://shammas.in/images/profile.jpg" />
+
+  <!-- Manifest & Theme -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#4285F4">
+
+  <!-- Icons -->
+  <link rel="icon" href="/images/favicon-light.ico" type="image/x-icon" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="/images/favicon-dark.ico" type="image/x-icon" media="(prefers-color-scheme: dark)">
+
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-2ZNW1FKGM0');
+    gtag('config', 'G-XXXXXXXX');
   </script>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AI Tools – Shammas Oliyath</title>
-  <meta name="description" content="A curated set of AI tools by Shammas Oliyath to assist in engineering, research, daily tasks, and learning." />
-  <meta name="author" content="Shammas Oliyath" />
-  <meta name="theme-color" content="#4285F4">
-  <link rel="canonical" href="https://tools.shammas.in/" />
-  <link rel="manifest" href="/manifest.json">
-  <link rel="icon" href="/favicon-light.ico" media="(prefers-color-scheme: light)">
-  <link rel="icon" href="/favicon-dark.ico" media="(prefers-color-scheme: dark)">
-  <meta property="og:title" content="AI Tools – Shammas Oliyath" />
-  <meta property="og:description" content="A curated set of AI tools by Shammas Oliyath to assist in engineering, research, daily tasks, and learning." />
-  <meta property="og:url" content="https://tools.shammas.in/" />
-  <meta property="og:image" content="https://shammas.in/images/og-image-tools.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"></script>
+
+  <!-- FontAwesome -->
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
   <style>
     :root {
       --primary-color: #4285F4;
@@ -48,7 +64,6 @@
       background-color: var(--background);
       color: var(--text-color);
       transition: background-color 0.4s ease, color 0.4s ease;
-      height: 100%;
     }
     body {
       display: flex;
@@ -78,9 +93,7 @@
       justify-content: center;
       flex-wrap: wrap;
       gap: 10px;
-      padding: 0 10px;
       margin-bottom: 20px;
-      box-sizing: border-box;
     }
     .tab-button {
       background-color: transparent;
@@ -91,7 +104,6 @@
       border-radius: 20px;
       cursor: pointer;
       transition: all 0.3s ease;
-      flex: 0 0 auto;
       white-space: nowrap;
     }
     .tab-button.active, .tab-button:hover {
@@ -164,28 +176,114 @@
       z-index: 100;
       box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     }
-    @media (max-width: 480px) {
-      .tab-button {
-        font-size: 13px;
-        padding: 5px 12px;
-      }
-    }
   </style>
 </head>
 <body>
-  <header style="padding: 1.5rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: var(--card-background); display: flex; justify-content: space-between; align-items: center;">
+  <header style="padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); background-color: var(--card-background); display: flex; justify-content: space-between; align-items: center;">
     <a href="https://shammas.in" style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.0rem; font-weight: bold; color: var(--text-color); text-decoration: none;">
-      <img src="images/profile.jpg" alt="Profile" style="width: 40px; height: 40px; border-radius: 9999px; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
+      <img src="/images/profile.jpg" alt="Shammas" style="width: 40px; height: 40px; border-radius: 9999px; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
       <span>Shammas Oliyath</span>
     </a>
     <button class="toggle-dark-mode" onclick="toggleDarkMode()">Toggle Dark Mode</button>
   </header>
+
   <h1>Welcome to AI Tools</h1>
-  <!-- Rest of body remains unchanged... -->
+  <div class="tabs">
+    <button class="tab-button active" onclick="showTab('engineering')">Engineering</button>
+    <button class="tab-button" onclick="showTab('research')">Research</button>
+    <button class="tab-button" onclick="showTab('daily')">Daily</button>
+    <button class="tab-button" onclick="showTab('learning')">Learning</button>
+  </div>
+  <div id="engineering" class="tab-content active">
+    <div class="button-grid">
+      <button class="tool" onclick="trackTool('hexCalculator')">🔢 Hex Calculator</button>
+      <button class="tool" onclick="trackTool('dnsLookup')">🌐 DNS Lookup</button>
+      <button class="tool" onclick="trackTool('unixTimestamp')">🕒 Unix Timestamp</button>
+      <button class="tool" onclick="trackTool('stringEncodings')">🔤 String Encoding</button>
+    </div>
+  </div>
+  <div id="research" class="tab-content">
+    <div class="button-grid">
+      <button class="tool" onclick="trackTool('researchDraft')">🔍 Research Draft</button>
+      <button class="tool" onclick="trackTool('factCheck')">✔️ Fact Check</button>
+    </div>
+  </div>
+  <div id="daily" class="tab-content">
+    <div class="button-grid">
+      <button class="tool" onclick="trackTool('currencyConverter')">💱 Currency</button>
+      <button class="tool" onclick="trackTool('globalTime')">🌍 Time</button>
+      <button class="tool" onclick="trackTool('lunarCalendar')">🌙 Lunar Calendar</button>
+      <button class="tool" onclick="trackTool('weather')">🌡️ Weather</button>
+    </div>
+  </div>
+  <div id="learning" class="tab-content">
+    <div class="button-grid">
+      <button class="tool" onclick="trackTool('coach')">🎓 Coach</button>
+    </div>
+  </div>
+
+  <div style="max-width: 900px; margin: 40px auto 20px; padding: 20px; background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; border-radius: 8px; font-size: 14px;">
+    ⚠️ <strong>Bug Info:</strong> If a tool shows "Not Found", restart your ChatGPT session and try again.
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Shammas Oliyath. All rights reserved.</p>
+    <nav>
+      <a href="/privacy-policy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms of Service</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </footer>
+
+  <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">⬆️</button>
+
+  <script>
+    function toggleDarkMode() {
+      const html = document.documentElement;
+      html.dataset.theme = html.dataset.theme === "dark" ? "light" : "dark";
+    }
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+    window.addEventListener('scroll', () => {
+      document.getElementById('backToTop').style.display = window.scrollY > 200 ? 'block' : 'none';
+    });
+
+    const toolsMap = {
+      hexCalculator: 'https://chatgpt.com/g/g-67cced6566208191a09579bf2dce06e8-hexadecimal-calculator',
+      dnsLookup: 'https://chatgpt.com/g/g-67cda8172e4481919f5fb6d5ec6bff31-dns-lookup',
+      unixTimestamp: 'https://chatgpt.com/g/g-67cdb2c7fcbc8191b9bbc2d9ad8679b2-unix-timestamp-converter',
+      stringEncodings: 'https://chatgpt.com/g/g-67cdb88247588191acbdc673bfff6ff7-character-encoding',
+      currencyConverter: 'https://chatgpt.com/g/g-67cdc066d1288191a43bd061a7db8ce9-currency-converter',
+      globalTime: 'https://chatgpt.com/g/g-67cdcf6b291481918c27e7543e3ef55e-global-time-assistant',
+      lunarCalendar: 'https://chatgpt.com/g/g-67cdd3dc69208191bd8694e7c92db2c3-lunar-calendar-converter',
+      weather: 'https://chatgpt.com/g/g-67cdda703ea881919cee0e53f4a2ba1d-weather',
+      researchDraft: 'https://chatgpt.com/g/g-67de11fe04a08191895f4603d973e16f-research-draft',
+      factCheck: 'https://chatgpt.com/g/g-67dfa0b4049c81918bd2aff29d98969f-factcheck',
+      coach: 'https://chatgpt.com/g/g-67dfc12697bc81919c0389e5b9dd10e3-skill-building-coach'
+    };
+
+    function trackTool(toolName) {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'click', {
+          'event_category': 'AI Tool',
+          'event_label': toolName
+        });
+      }
+      window.location.href = toolsMap[toolName];
+    }
+  </script>
+
+  <!-- Register Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/service-worker.js');
+      navigator.serviceWorker.register('/sw.js').then(reg => {
+        console.log('Service Worker registered', reg);
+      }).catch(err => {
+        console.error('Service Worker registration failed', err);
       });
     }
   </script>
