@@ -68,10 +68,11 @@
             url: 'https://tools-shammas-oliyaths-projects.vercel.app/api/csvformatter_endpoint', // Your backend endpoint that invokes csvformatter.py
             method: 'POST',
             dataType: 'json',
-            data: {
+            data: JSON.stringify({
               csv: csvData,
               option: '-q'
-            },
+            }),
+            contentType: 'application/json',
             success: function(response) {
               // Expected response: { "columns": ["Name", "Place", "Date", ...] }
               if(response.columns && response.columns.length) {
