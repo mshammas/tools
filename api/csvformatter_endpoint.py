@@ -1,52 +1,57 @@
-import subprocess
 import json
+import subprocess
+from http.server import BaseHTTPRequestHandler
 
-def handler(request):
-    # Only allow POST requests.
+def handler(request, response):
+    # 1) Only allow POST requests
     if request.method != "POST":
-        return {
-            "statusCode": 405,
-            "body": json.dumps({"error": "Method not allowed"})
-        }
+        response.status_code = 405
+        response.body = json.dumps({"error": "Method not allowed"})
+        return response
 
+    # 2) Parse the JSON body from the request
     try:
-        # Parse the incoming JSON body.
-        body = request.get_json()
-    except Exception:
-        return {
-            "statusCode": 400,
-            "body": json.dumps({"error": "Invalid JSON"})
-        }
+        body = request.json()  # Vercel's built-in method to get JSON from request
+    except Exception as e:
+        response.status_code = 400
+        response.body = json.dumps({"error": "Invalid JSON", "details": str(e)})
+        return response
 
-    # Extract CSV data and option (e.g., "-q" or "-r1-3").
+    # 3) Extract csv data and the option (e.g., "-q" or "-r1-3")
     csv_data = body.get("csv")
-    option = body.get("option")
+    option   = body.get("option")
     if not csv_data or not option:
-        return {
-            "statusCode": 400,
-            "body": json.dumps({"error": "Missing csv data or option"})
-        }
-    
-    # Save CSV content to a temporary file.
+        response.status_code = 400
+        response.body = json.dumps({"error": "Missing csv data or option"})
+        return response
+
+    # 4) Write CSV content to a temporary file (Vercel allows /tmp)
     temp_csv_path = "/tmp/input.csv"
-    with open(temp_csv_path, "w") as f:
-        f.write(csv_data)
+    try:
+        with open(temp_csv_path, "w") as f:
+            f.write(csv_data)
+    except Exception as e:
+        response.status_code = 500
+        response.body = json.dumps({"error": "Failed to write file", "details": str(e)})
+        return response
 
-    # Build the command.
-    # Adjust the path to csvformatter.py if necessary.
-    cmd = ["python", "csvformatter.py", option, temp_csv_path]
-
+    # 5) Call your csvformatter.py script
+    #    Adjust path if csvformatter.py is in another folder, e.g. "api/csvformatter.py"
+    cmd = ["python3", "csvformatter.py", option, temp_csv_path]
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         output = result.stdout
     except subprocess.CalledProcessError as e:
-        return {
-            "statusCode": 500,
-            "body": json.dumps({"error": "Processing error", "details": e.stderr})
-        }
-    
-    # Return the output from csvformatter.py.
-    return {
-        "statusCode": 200,
-        "body": json.dumps({"output": output})
-    }
+        response.status_code = 500
+        response.body = json.dumps({"error": "Processing error", "details": e.stderr})
+        return response
+    except Exception as e:
+        response.status_code = 500
+        response.body = json.dumps({"error": "Subprocess error", "details": str(e)})
+        return response
+
+    # 6) Return the successful result
+    response.status_code = 200
+    response.headers["Content-Type"] = "application/json"
+    response.body = json.dumps({"output": output})
+    return response
