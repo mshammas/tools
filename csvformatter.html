@@ -117,13 +117,14 @@
 
         // AJAX call to run csvformatter.py with the -r option
         $.ajax({
-          url: 'https://tools-git-main-shammas-oliyaths-projects.vercel.app/api/csvformatter_endpoint', // Your backend endpoint that invokes csvformatter.py
+          url: 'https://tools-git-main-shammas-oliyaths-projects.vercel.app/api/csvformatter_endpoint',
           method: 'POST',
           dataType: 'json',
-          data: {
+          data: JSON.stringify({
             csv: csvData,
             option: optionStr
-          },
+          }),
+          contentType: 'application/json',
           success: function(response) {
             // Expected response: { "output": "formatted text here..." }
             $('#result-text').val(response.output);
