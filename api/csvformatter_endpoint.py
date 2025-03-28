@@ -33,7 +33,7 @@ def handler(request, response):
         return response
 
     # Build the command – adjust the path if csvformatter.py is in the repository root.
-    cmd = ["python3", "csvformatter.py", option, temp_csv_path]
+    cmd = ["python3", "../csvformatter.py", option, temp_csv_path]
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         output = result.stdout
