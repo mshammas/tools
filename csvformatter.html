@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSV Formatter</title>
+  <!-- Link to your repository’s common stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Include jQuery (or another preferred library) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    /* Example styling – adjust or remove if your template provides these */
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    header, footer { background: #333; color: #fff; padding: 1em; text-align: center; }
+    main { padding: 2em; }
+    h2 { margin-top: 1.5em; }
+    #result-text { width: 100%; height: 300px; font-family: "Courier New", Courier, monospace; }
+    label { display: block; margin: 0.5em 0; }
+  </style>
+</head>
+<body>
+  <!-- Header section (from your existing template) -->
+  <header>
+    <h1>CSV Formatter Tool</h1>
+  </header>
+
+  <main>
+    <!-- Section to load the CSV file -->
+    <section id="upload-section">
+      <h2>Upload CSV File</h2>
+      <input type="file" id="csvFile" accept=".csv">
+    </section>
+
+    <!-- Section to show column checkboxes (hidden until file is loaded) -->
+    <section id="columns-section" style="display: none;">
+      <h2>Select Columns</h2>
+      <div id="columns-list">
+        <!-- Dynamically generated checkboxes will appear here -->
+      </div>
+    </section>
+
+    <!-- Section to display the output from csvformatter.py -->
+    <section id="result-section" style="display: none;">
+      <h2>Formatted Output</h2>
+      <textarea id="result-text" readonly></textarea>
+    </section>
+  </main>
+
+  <!-- Footer section (from your existing template) -->
+  <footer>
+    <p>&copy; 2025 Your Repository Name</p>
+  </footer>
+
+  <script>
+    $(document).ready(function() {
+      let csvData = null;
+
+      // Handle CSV file selection
+      $('#csvFile').on('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          csvData = e.target.result;
+
+          // AJAX call to run csvformatter.py with -q option
+          $.ajax({
+            url: 'run_csvformatter.php', // Your backend endpoint that invokes csvformatter.py
+            method: 'POST',
+            dataType: 'json',
+            data: {
+              csv: csvData,
+              option: '-q'
+            },
+            success: function(response) {
+              // Expected response: { "columns": ["Name", "Place", "Date", ...] }
+              if(response.columns && response.columns.length) {
+                let html = '';
+                // Loop through the columns and generate checkboxes.
+                for (let i = 0; i < response.columns.length; i++) {
+                  // Using (i+1) for 1-based index as required by csvformatter.py.
+                  html += '<label><input type="checkbox" class="column-checkbox" data-index="' + (i + 1) + '"> ' + response.columns[i] + '</label>';
+                }
+                $('#columns-list').html(html);
+                $('#columns-section').show();
+                // Hide output if previously shown
+                $('#result-section').hide();
+              } else {
+                alert('No columns found in CSV header.');
+              }
+            },
+            error: function() {
+              alert('Error processing CSV file with csvformatter.py (-q option).');
+            }
+          });
+        };
+        reader.readAsText(file);
+      });
+
+      // Handle changes in checkbox selection
+      $(document).on('change', '.column-checkbox', function() {
+        let selectedIndexes = [];
+        $('.column-checkbox:checked').each(function() {
+          selectedIndexes.push($(this).data('index'));
+        });
+
+        // If no checkbox is selected, clear the result area and hide it
+        if (selectedIndexes.length === 0) {
+          $('#result-text').val('');
+          $('#result-section').hide();
+          return;
+        }
+
+        // Build the -r option string (e.g., "-r1-3" for columns 1 and 3)
+        let optionStr = '-r' + selectedIndexes.join('-');
+
+        // AJAX call to run csvformatter.py with the -r option
+        $.ajax({
+          url: 'run_csvformatter.php', // Your backend endpoint that invokes csvformatter.py
+          method: 'POST',
+          dataType: 'json',
+          data: {
+            csv: csvData,
+            option: optionStr
+          },
+          success: function(response) {
+            // Expected response: { "output": "formatted text here..." }
+            $('#result-text').val(response.output);
+            $('#result-section').show();
+          },
+          error: function() {
+            alert('Error processing CSV file with csvformatter.py (' + optionStr + ' option).');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
