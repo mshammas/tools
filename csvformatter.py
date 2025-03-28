@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 csvformatter.py 
 author : Mohammed Shammas (mshammas@in.ibm.com)
