@@ -37,7 +37,7 @@ def handler(request, response):
 
     # 5) Call your csvformatter.py script
     #    Adjust path if csvformatter.py is in another folder, e.g. "api/csvformatter.py"
-    cmd = ["python3", "csvformatter.py", option, temp_csv_path]
+    cmd = ["python3", "api/csvformatter.py", option, temp_csv_path]
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         output = result.stdout
