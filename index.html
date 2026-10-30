@@ -35,8 +35,23 @@
   <meta name="theme-color" content="#4285F4">
 
   <!-- Icons -->
-  <link rel="icon" href="/images/favicon-light.ico" type="image/x-icon" media="(prefers-color-scheme: light)">
-  <link rel="icon" href="/images/favicon-dark.ico" type="image/x-icon" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/images/icon-192.png" type="image/png">
+
+  <!-- Apply the saved theme before first paint so there is no flash of the
+       wrong one. Falls back to the system preference on a first visit. -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        if (!saved) {
+          saved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = saved;
+      } catch (e) {
+        /* private mode — the data-theme on <html> stays as the fallback */
+      }
+    })();
+  </script>
   <!-- Tailwind CSS -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">  
   <!-- Google Fonts -->
@@ -55,8 +70,11 @@
       --background: #ffffff;            /* full white for clean contrast */
       --text-color: #111111;            /* almost black for max contrast */
       --card-background: #f2f2f2;       /* slightly gray to offset white */
-      --featured-border: #d8d8d8;       /* outline of the featured app card */
+      --border-color: #d8d8d8;          /* card outlines and the footer rule */
       --featured-soft: #e8effb;         /* tinted backing behind its icon */
+      --note-bg: #fff3cd;               /* the bug-info callout */
+      --note-text: #6a5200;
+      --note-border: #ffe08a;
     }
 
     [data-theme="dark"] {
@@ -65,8 +83,11 @@
       --background: #121212;
       --text-color: #f8f9fa;            /* slightly brighter than #eee */
       --card-background: #1e1e1e;
-      --featured-border: #333333;
+      --border-color: #333333;
       --featured-soft: #15233a;
+      --note-bg: #2a2416;
+      --note-text: #ffd97a;
+      --note-border: #4d421f;
     }
     html, body {
       margin: 0;
@@ -169,7 +190,7 @@
       margin: 0 auto 36px;
       padding: 22px 26px;
       background-color: var(--card-background);
-      border: 1px solid var(--featured-border);
+      border: 1px solid var(--border-color);
       border-left: 4px solid var(--primary-color);
       border-radius: 12px;
       text-decoration: none;
@@ -237,23 +258,23 @@
     }
     footer {
       margin-top: auto;
-      background-color: #eee; /* Slightly lighter than #eee for better contrast */
+      background-color: var(--card-background);
       padding: 20px 0;
       font-size: 14px;
-      border-top: 1px solid #bbb; /* Darker border for better separation */
-      color: #2a2a2a; /* Darker text color for better readability */
+      border-top: 1px solid var(--border-color);
+      color: var(--text-color);
     }
     
     footer nav a {
       margin: 0 10px;
-      color: #1a73e8; /* Higher contrast blue */
+      color: var(--primary-color);
       text-decoration: none;
       font-weight: 500; /* Slightly bolder text */
     }
-    
+
     footer nav a:hover {
       text-decoration: underline;
-      color: #0b5ed7; /* Even deeper blue for hover state */
+      color: var(--hover-color);
     }
     #backToTop {
       position: fixed;
@@ -348,17 +369,20 @@
     </div>
   </div>
 
-  <div style="max-width: 900px; margin: 40px auto 20px; padding: 20px; background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; border-radius: 8px; font-size: 14px;">
+  <div style="max-width: 900px; margin: 40px auto 20px; padding: 20px; background-color: var(--note-bg); color: var(--note-text); border: 1px solid var(--note-border); border-radius: 8px; font-size: 14px;">
     ⚠️ <strong>Bug Info:</strong> If a tool shows "Not Found", restart your ChatGPT session and try again.
   </div>
 
   <!-- Footer -->
-  <footer class="mt-16 py-6 bg-gray-50 text-center text-gray-800 text-sm">
+  <!-- No Tailwind colour utilities here: a class beats the `footer` element
+       selector below, so bg-gray-50 / text-gray-800 pinned the footer light
+       in dark mode. The theme variables govern it instead. -->
+  <footer>
     <p class="mb-2">&copy; 2025 Shammas Oliyath. All rights reserved.</p>
-    <nav class="space-x-4">
-      <a href="/privacy-policy.html" class="hover:underline text-blue-900 hover:text-blue-1000">Privacy Policy</a>
-      <a href="/terms.html" class="hover:underline text-blue-900 hover:text-blue-1000">Terms of Service</a>
-      <a href="/contact.html" class="hover:underline text-blue-900 hover:text-blue-1000">Contact</a>
+    <nav>
+      <a href="/privacy-policy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms of Service</a>
+      <a href="/contact.html">Contact</a>
     </nav>
   </footer>
 
@@ -367,7 +391,9 @@
   <script>
     function toggleDarkMode() {
       const html = document.documentElement;
-      html.dataset.theme = html.dataset.theme === "dark" ? "light" : "dark";
+      const next = html.dataset.theme === "dark" ? "light" : "dark";
+      html.dataset.theme = next;
+      try { localStorage.setItem('theme', next); } catch (e) { /* private mode */ }
     }
     function showTab(tabId) {
       document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
