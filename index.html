@@ -55,14 +55,18 @@
       --background: #ffffff;            /* full white for clean contrast */
       --text-color: #111111;            /* almost black for max contrast */
       --card-background: #f2f2f2;       /* slightly gray to offset white */
+      --featured-border: #d8d8d8;       /* outline of the featured app card */
+      --featured-soft: #e8effb;         /* tinted backing behind its icon */
     }
-    
+
     [data-theme="dark"] {
       --primary-color: #90caf9;         /* good contrast on dark */
       --hover-color: #64b5f6;
       --background: #121212;
       --text-color: #f8f9fa;            /* slightly brighter than #eee */
       --card-background: #1e1e1e;
+      --featured-border: #333333;
+      --featured-soft: #15233a;
     }
     html, body {
       margin: 0;
@@ -154,6 +158,83 @@
     button.tool:hover {
       background-color: var(--hover-color);
     }
+    /* Featured card. Everything in the tabs below is a ChatGPT assistant;
+       this is the one tool you download and run, so it sits above them. */
+    .featured {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      text-align: left;
+      max-width: 760px;
+      margin: 0 auto 36px;
+      padding: 22px 26px;
+      background-color: var(--card-background);
+      border: 1px solid var(--featured-border);
+      border-left: 4px solid var(--primary-color);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text-color);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .featured:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+    .featured-icon {
+      flex: 0 0 auto;
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--featured-soft);
+      color: var(--primary-color);
+      font-size: 24px;
+    }
+    .featured-body {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1 1 auto;
+    }
+    .featured-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--primary-color);
+    }
+    .featured-title { font-size: 1.15rem; font-weight: 700; }
+    .featured-desc { font-size: 0.88rem; line-height: 1.55; opacity: 0.85; }
+    .featured-os {
+      font-size: 0.78rem;
+      opacity: 0.7;
+      margin-top: 5px;
+      display: flex;
+      gap: 15px;
+    }
+    .featured-os i { margin-right: 4px; }
+    .featured-cta {
+      flex: 0 0 auto;
+      background-color: var(--primary-color);
+      color: var(--background);
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    @media (max-width: 640px) {
+      .featured {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .featured-body { align-items: center; }
+      .featured-os { justify-content: center; flex-wrap: wrap; }
+      .featured-cta { width: 100%; text-align: center; }
+    }
     footer {
       margin-top: auto;
       background-color: #eee; /* Slightly lighter than #eee for better contrast */
@@ -217,6 +298,22 @@
     </ul>
   </div>  
   -->
+  <a class="featured" href="/yt-download/" onclick="trackFeatured()">
+    <span class="featured-icon"><i class="fas fa-film" aria-hidden="true"></i></span>
+    <span class="featured-body">
+      <span class="featured-kicker">Desktop app · free</span>
+      <span class="featured-title">Video Tools</span>
+      <span class="featured-desc">Download a video in the best quality available, cut an exact
+        clip out of it, or mix several into one. Everything runs on your own machine.</span>
+      <span class="featured-os">
+        <span><i class="fab fa-apple" aria-hidden="true"></i>macOS</span>
+        <span><i class="fab fa-windows" aria-hidden="true"></i>Windows</span>
+        <span><i class="fab fa-linux" aria-hidden="true"></i>Linux</span>
+      </span>
+    </span>
+    <span class="featured-cta">Download →</span>
+  </a>
+
   <div class="tabs">
     <button class="tab-button active" onclick="showTab('engineering')">Engineering</button>
     <button class="tab-button" onclick="showTab('research')">Research</button>
@@ -229,7 +326,6 @@
       <button class="tool" onclick="trackTool('dnsLookup')">🌐 DNS Lookup</button>
       <button class="tool" onclick="trackTool('unixTimestamp')">🕒 Unix Timestamp</button>
       <button class="tool" onclick="trackTool('stringEncodings')">🔤 String Encoding</button>
-      <button class="tool" onclick="trackTool('videoTools')">🎬 Video Tools</button>
     </div>
   </div>
   <div id="research" class="tab-content">
@@ -288,8 +384,6 @@
       dnsLookup: 'https://chatgpt.com/g/g-67cda8172e4481919f5fb6d5ec6bff31-dns-lookup',
       unixTimestamp: 'https://chatgpt.com/g/g-67cdb2c7fcbc8191b9bbc2d9ad8679b2-unix-timestamp-converter',
       stringEncodings: 'https://chatgpt.com/g/g-67cdb88247588191acbdc673bfff6ff7-character-encoding',
-      // A downloadable desktop app, not a ChatGPT assistant like the others.
-      videoTools: '/yt-download/',
       currencyConverter: 'https://chatgpt.com/g/g-67cdc066d1288191a43bd061a7db8ce9-currency-converter',
       globalTime: 'https://chatgpt.com/g/g-67cdcf6b291481918c27e7543e3ef55e-global-time-assistant',
       lunarCalendar: 'https://chatgpt.com/g/g-67cdd3dc69208191bd8694e7c92db2c3-lunar-calendar-converter',
@@ -307,6 +401,17 @@
         });
       }
       window.location.href = toolsMap[toolName];
+    }
+
+    // The featured card is a plain link, so this only records the click and
+    // lets the browser follow the href itself.
+    function trackFeatured() {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'click', {
+          'event_category': 'AI Tool',
+          'event_label': 'videoTools'
+        });
+      }
     }
   </script>
 
