@@ -726,20 +726,22 @@ pip install --upgrade yt-dlp</span>
 
   <script>
     /* ------------------------------------------------------------------
-       Release config — the only thing to edit when the builds are ready.
-       1. Set available: true
-       2. Point `base` at wherever the files are hosted (a GitHub release,
-          or a /yt-download/downloads/ folder in this repo)
-       3. Fill in each file's `size` (optional; hidden when empty)
+       Release config. To publish a new version: tag the video-tools repo
+       (the Build installers workflow attaches the three files to the
+       release), then bump `version` here and update each file name and
+       size to match the new release's assets.
+
+       Setting `available: false` puts every card back into the
+       "Coming soon" state, e.g. while a release is being rebuilt.
        ------------------------------------------------------------------ */
     const RELEASE = {
       version: '1.0.0',
-      available: false,
+      available: true,
       base: 'https://github.com/mshammas/video-tools/releases/download/v1.0.0/',
       files: {
-        macos:   { file: 'video-tools-1.0.0-macos.dmg',    label: 'Download for macOS',   size: '' },
-        windows: { file: 'video-tools-1.0.0-windows.zip',  label: 'Download for Windows', size: '' },
-        linux:   { file: 'video-tools-1.0.0-linux.tar.gz', label: 'Download for Linux',   size: '' }
+        macos:   { file: 'video-tools-1.0.0-macos.dmg',    label: 'Download for macOS',   size: '12.5 MB' },
+        windows: { file: 'video-tools-1.0.0-windows.zip',  label: 'Download for Windows', size: '11.3 MB' },
+        linux:   { file: 'video-tools-1.0.0-linux.tar.gz', label: 'Download for Linux',   size: '25.0 MB' }
       }
     };
 
