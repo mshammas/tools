@@ -614,10 +614,9 @@
           <i class="fas fa-shield-alt" aria-hidden="true"></i>
           <span>
             <strong>The builds are not signed with a developer certificate</strong>
-            <em>On macOS you will see <strong>“Video Tools is damaged and can’t be opened”</strong>.
-            Nothing is actually wrong with the download — that is Gatekeeper refusing an app it
-            cannot verify. The macOS steps below clear it with one command. On Windows,
-            SmartScreen shows a warning: click <strong>More info → Run anyway</strong>.</em>
+            <em>macOS will refuse the first launch — right-click the app and choose
+            <strong>Open</strong>, then confirm. It only asks once. On Windows, SmartScreen shows
+            a warning: click <strong>More info → Run anyway</strong>.</em>
           </span>
         </li>
         <li>
@@ -660,12 +659,13 @@
             </li>
             <li>Download the <code>.dmg</code>, open it, and drag <strong>Video Tools</strong>
               into your Applications folder.</li>
-            <li>macOS will say the app is <strong>damaged</strong>, because it is not signed with
-              an Apple Developer ID. Remove the download quarantine flag once, then open the app
-              normally:
+            <li>The first time, right-click the app and choose <strong>Open</strong>, then
+              confirm. macOS asks because the app is not signed with an Apple Developer ID; it
+              only asks once. You can eject the disk image afterwards.</li>
+            <li>If macOS instead calls the app <strong>damaged</strong>, you are on an older
+              download — get 1.0.1 above, or clear the quarantine flag on what you have:
               <span class="cmd">xattr -dr com.apple.quarantine "/Applications/Video Tools.app"</span>
             </li>
-            <li>You can eject the disk image afterwards.</li>
           </ol>
         </div>
       </div>
@@ -743,13 +743,13 @@ pip install --upgrade yt-dlp</span>
        "Coming soon" state, e.g. while a release is being rebuilt.
        ------------------------------------------------------------------ */
     const RELEASE = {
-      version: '1.0.0',
+      version: '1.0.1',
       available: true,
-      base: 'https://github.com/mshammas/video-tools/releases/download/v1.0.0/',
+      base: 'https://github.com/mshammas/video-tools/releases/download/v1.0.1/',
       files: {
-        macos:   { file: 'video-tools-1.0.0-macos.dmg',    label: 'Download for macOS',   size: '12.5 MB' },
-        windows: { file: 'video-tools-1.0.0-windows.zip',  label: 'Download for Windows', size: '11.3 MB' },
-        linux:   { file: 'video-tools-1.0.0-linux.tar.gz', label: 'Download for Linux',   size: '25.0 MB' }
+        macos:   { file: 'video-tools-1.0.1-macos.dmg',    label: 'Download for macOS',   size: '12.5 MB' },
+        windows: { file: 'video-tools-1.0.1-windows.zip',  label: 'Download for Windows', size: '11.3 MB' },
+        linux:   { file: 'video-tools-1.0.1-linux.tar.gz', label: 'Download for Linux',   size: '25.0 MB' }
       }
     };
 
