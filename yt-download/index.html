@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2ZNW1FKGM0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2ZNW1FKGM0');
+  </script>
+
+  <!-- Apply the saved theme before first paint so there is no flash -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        if (!saved) {
+          saved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = saved;
+      } catch (e) {
+        document.documentElement.dataset.theme = 'light';
+      }
+    })();
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Tools — Download for macOS, Windows &amp; Linux</title>
+
+  <!-- Meta SEO -->
+  <meta name="description" content="Download Video Tools, a free desktop app to download, clip and mix videos. Installers for macOS, Windows and Linux." />
+  <meta name="author" content="Shammas Oliyath" />
+  <link rel="canonical" href="https://tools.shammas.in/yt-download/" />
+
+  <!-- Open Graph / Social Meta -->
+  <meta property="og:title" content="Video Tools — Download for macOS, Windows &amp; Linux" />
+  <meta property="og:description" content="A free desktop app to download, clip and mix videos. Installers for macOS, Windows and Linux." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tools.shammas.in/yt-download/" />
+  <meta property="og:image" content="https://shammas.in/images/profile.jpg" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Video Tools — Download for macOS, Windows &amp; Linux" />
+  <meta name="twitter:description" content="A free desktop app to download, clip and mix videos." />
+  <meta name="twitter:image" content="https://shammas.in/images/profile.jpg" />
+
+  <!-- Manifest & Theme -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#174ea6">
+
+  <!-- Icons -->
+  <link rel="icon" href="/images/icon-192.png" type="image/png">
+
+  <!-- Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    :root {
+      --primary-color: #174ea6;
+      --hover-color: #0c3c91;
+      --background: #ffffff;
+      --text-color: #111111;
+      --card-background: #f2f2f2;
+      /* page additions — both themes defined */
+      --muted-color: #4a4a4a;
+      --border-color: #d8d8d8;
+      --surface: #ffffff;
+      --accent-soft: #e8effb;
+      --note-bg: #fff3cd;
+      --note-text: #6a5200;
+      --note-border: #ffe08a;
+      --code-bg: #f0f2f5;
+      --shadow: 0 1px 3px rgba(0,0,0,0.10);
+      --shadow-lift: 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    [data-theme="dark"] {
+      --primary-color: #90caf9;
+      --hover-color: #64b5f6;
+      --background: #121212;
+      --text-color: #f8f9fa;
+      --card-background: #1e1e1e;
+      /* page additions — both themes defined */
+      --muted-color: #b4b8bd;
+      --border-color: #333333;
+      --surface: #1a1a1a;
+      --accent-soft: #15233a;
+      --note-bg: #2a2416;
+      --note-text: #ffd97a;
+      --note-border: #4d421f;
+      --code-bg: #242424;
+      --shadow: 0 1px 3px rgba(0,0,0,0.5);
+      --shadow-lift: 0 8px 24px rgba(0,0,0,0.5);
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--background);
+      color: var(--text-color);
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    * { box-sizing: border-box; }
+
+    .wrap {
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .toggle-dark-mode {
+      background: none;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 12px;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+    .toggle-dark-mode:hover {
+      background-color: var(--primary-color);
+      color: var(--background);
+    }
+
+    /* ---------- hero ---------- */
+    .hero {
+      text-align: center;
+      padding: 56px 0 8px;
+    }
+    .hero-icon {
+      width: 88px;
+      height: 88px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--accent-soft);
+      color: var(--primary-color);
+      font-size: 40px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      margin: 0 0 6px;
+      font-size: 2.4rem;
+      line-height: 1.15;
+    }
+    .version-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--primary-color);
+      background-color: var(--accent-soft);
+      border-radius: 999px;
+      padding: 4px 12px;
+      margin-bottom: 18px;
+    }
+    .hero p.lede {
+      max-width: 620px;
+      margin: 0 auto;
+      font-size: 1.08rem;
+      line-height: 1.6;
+      color: var(--muted-color);
+    }
+
+    /* ---------- sections ---------- */
+    section { padding: 40px 0; }
+    h2.section-title {
+      font-size: 1.45rem;
+      margin: 0 0 6px;
+      text-align: center;
+    }
+    p.section-sub {
+      text-align: center;
+      color: var(--muted-color);
+      font-size: 0.95rem;
+      margin: 0 auto 28px;
+      max-width: 620px;
+      line-height: 1.6;
+    }
+
+    /* ---------- download cards ---------- */
+    #detected-line {
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--muted-color);
+      margin: 0 auto 24px;
+      min-height: 20px;
+    }
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+    .dl-card {
+      position: relative;
+      background-color: var(--surface);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 26px 22px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .dl-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lift);
+    }
+    .dl-card.is-detected {
+      border-color: var(--primary-color);
+      border-width: 2px;
+      padding: 25px 21px;
+    }
+    .dl-flag {
+      position: absolute;
+      top: -11px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--primary-color);
+      color: var(--background);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 3px 12px;
+      border-radius: 999px;
+      display: none;
+      white-space: nowrap;
+    }
+    .dl-card.is-detected .dl-flag { display: block; }
+    .dl-os-icon {
+      font-size: 34px;
+      color: var(--primary-color);
+      margin-bottom: 12px;
+      display: block;
+    }
+    .dl-card h3 {
+      margin: 0 0 4px;
+      font-size: 1.1rem;
+    }
+    .dl-meta {
+      font-size: 0.82rem;
+      color: var(--muted-color);
+      margin: 0 0 18px;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+    .dl-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background-color: var(--primary-color);
+      color: var(--background);
+      border: none;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: inherit;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+    .dl-button:hover { background-color: var(--hover-color); }
+    .dl-button[aria-disabled="true"] {
+      background-color: var(--card-background);
+      color: var(--muted-color);
+      border: 1px solid var(--border-color);
+      cursor: not-allowed;
+    }
+    .dl-button[aria-disabled="true"]:hover { background-color: var(--card-background); }
+
+    .note {
+      background-color: var(--note-bg);
+      color: var(--note-text);
+      border: 1px solid var(--note-border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-top: 26px;
+    }
+    .note strong { font-weight: 700; }
+
+    /* ---------- feature cards ---------- */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 18px;
+    }
+    .feature {
+      background-color: var(--card-background);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 24px 22px;
+    }
+    .feature i {
+      font-size: 22px;
+      color: var(--primary-color);
+      margin-bottom: 12px;
+      display: block;
+    }
+    .feature h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+    .feature p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: var(--muted-color);
+    }
+
+    /* ---------- tabs (same pattern as the tools home page) ---------- */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .tab-button {
+      background-color: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: 6px 16px;
+      font-size: 14px;
+      font-family: inherit;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+    .tab-button.active, .tab-button:hover {
+      background-color: var(--primary-color);
+      color: var(--background);
+    }
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+    .tab-content.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .steps {
+      background-color: var(--surface);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 26px 30px;
+      box-shadow: var(--shadow);
+    }
+    .steps ol {
+      margin: 0;
+      padding-left: 22px;
+    }
+    .steps li {
+      margin-bottom: 12px;
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+    .steps li:last-child { margin-bottom: 0; }
+    code, .cmd {
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 0.86em;
+      background-color: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+      padding: 2px 6px;
+    }
+    .cmd {
+      display: block;
+      padding: 10px 12px;
+      margin: 10px 0 0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    /* ---------- requirements ---------- */
+    .req-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 14px;
+    }
+    .req-list li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background-color: var(--card-background);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 18px 20px;
+      font-size: 0.93rem;
+      line-height: 1.65;
+    }
+    .req-list i {
+      color: var(--primary-color);
+      font-size: 18px;
+      flex: 0 0 auto;
+      margin-top: 2px;
+    }
+    .req-list span > strong { display: block; margin-bottom: 2px; }
+    .req-list span em {
+      color: var(--muted-color);
+      font-style: normal;
+    }
+
+    .fineprint {
+      border-top: 1px solid var(--border-color);
+      margin-top: 8px;
+      padding-top: 26px;
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: var(--muted-color);
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    .fineprint a { color: var(--primary-color); }
+
+    /* ---------- footer ---------- */
+    footer {
+      margin-top: auto;
+      background-color: var(--card-background);
+      padding: 24px 0;
+      font-size: 14px;
+      text-align: center;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-color);
+    }
+    footer nav a {
+      margin: 0 10px;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    footer nav a:hover { text-decoration: underline; }
+
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 20px;
+      background-color: var(--primary-color);
+      color: var(--background);
+      padding: 10px 15px;
+      border: none;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      display: none;
+      z-index: 100;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding-top: 36px; }
+      .hero h1 { font-size: 1.9rem; }
+      .steps { padding: 22px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header style="padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); background-color: var(--card-background); display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+    <a href="https://shammas.in" style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.0rem; font-weight: bold; color: var(--text-color); text-decoration: none;">
+      <img src="/images/profile.jpg" alt="Shammas" style="width: 40px; height: 40px; border-radius: 9999px; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
+      <span>Shammas Oliyath</span>
+    </a>
+    <button class="toggle-dark-mode" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+  </header>
+
+  <!-- ===================== Hero ===================== -->
+  <div class="hero wrap">
+    <span class="hero-icon" aria-hidden="true"><i class="fas fa-film"></i></span>
+    <h1>Video Tools</h1>
+    <div class="version-badge" id="version-badge">Version 1.0.0</div>
+    <p class="lede">
+      A small desktop app that does three jobs well: download a video in the best
+      quality available, cut an exact clip out of it, and mix several videos into one.
+      Free, runs entirely on your own machine, and keeps nothing on a server.
+    </p>
+  </div>
+
+  <!-- ===================== Downloads ===================== -->
+  <section id="download">
+    <div class="wrap">
+      <h2 class="section-title">Download</h2>
+      <p class="section-sub">Pick the installer for your operating system.</p>
+      <div id="detected-line" role="status"></div>
+
+      <div class="download-grid">
+        <div class="dl-card" data-os="macos">
+          <span class="dl-flag">Your system</span>
+          <i class="fab fa-apple dl-os-icon" aria-hidden="true"></i>
+          <h3>macOS</h3>
+          <p class="dl-meta" data-role="meta">Apple silicon &amp; Intel · .dmg</p>
+          <a class="dl-button" data-role="button" href="#" aria-disabled="true">
+            <i class="fas fa-hourglass-half" aria-hidden="true"></i><span data-role="label">Coming soon</span>
+          </a>
+        </div>
+
+        <div class="dl-card" data-os="windows">
+          <span class="dl-flag">Your system</span>
+          <i class="fab fa-windows dl-os-icon" aria-hidden="true"></i>
+          <h3>Windows</h3>
+          <p class="dl-meta" data-role="meta">Windows 10 &amp; 11, 64-bit · .zip</p>
+          <a class="dl-button" data-role="button" href="#" aria-disabled="true">
+            <i class="fas fa-hourglass-half" aria-hidden="true"></i><span data-role="label">Coming soon</span>
+          </a>
+        </div>
+
+        <div class="dl-card" data-os="linux">
+          <span class="dl-flag">Your system</span>
+          <i class="fab fa-linux dl-os-icon" aria-hidden="true"></i>
+          <h3>Linux</h3>
+          <p class="dl-meta" data-role="meta">x86_64 · .tar.gz</p>
+          <a class="dl-button" data-role="button" href="#" aria-disabled="true">
+            <i class="fas fa-hourglass-half" aria-hidden="true"></i><span data-role="label">Coming soon</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="note" id="release-note">
+        ⏳ <strong>Builds are on the way.</strong> The installers for all three platforms are
+        being prepared and this page will go live with them. In the meantime the tools can be
+        run from source — see the notes under <a href="#install">Installing</a>.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Features ===================== -->
+  <section id="features" style="background-color: var(--background);">
+    <div class="wrap">
+      <h2 class="section-title">What it does</h2>
+      <p class="section-sub">Three tabs in one window. Nothing is uploaded anywhere — every job runs locally with ffmpeg.</p>
+
+      <div class="feature-grid">
+        <div class="feature">
+          <i class="fas fa-download" aria-hidden="true"></i>
+          <h3>Download</h3>
+          <p>
+            Fetch a video at the highest resolution available. Cap the resolution if you want a
+            smaller file, choose MP4 (H.264 + AAC, plays anywhere) or MKV for 1440p and 4K, and
+            optionally split a long video into one file per chapter.
+          </p>
+        </div>
+        <div class="feature">
+          <i class="fas fa-cut" aria-hidden="true"></i>
+          <h3>Clip</h3>
+          <p>
+            Cut a segment out of a local file or straight from a link, giving start and end as
+            <code>HH:MM:SS</code>, <code>MM:SS</code> or plain seconds. Re-encodes for a
+            frame-exact cut, or copies the streams for a near-instant one.
+          </p>
+        </div>
+        <div class="feature">
+          <i class="fas fa-layer-group" aria-hidden="true"></i>
+          <h3>Mix</h3>
+          <p>
+            Join clips one after another with optional crossfades, lay them out side by side in a
+            grid, or blend them on top of each other — useful for comparisons and
+            picture-in-picture.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Requirements ===================== -->
+  <section id="requirements">
+    <div class="wrap">
+      <h2 class="section-title">Before you start</h2>
+      <p class="section-sub">A few things worth knowing — they will save you a confused minute on first launch.</p>
+
+      <ul class="req-list">
+        <li>
+          <i class="fas fa-cube" aria-hidden="true"></i>
+          <span>
+            <strong>ffmpeg and yt-dlp are not bundled</strong>
+            <em>The app looks for both on your system when it starts and points you at the right
+            install command for your platform (Homebrew, apt, winget or pip). Everything the app
+            does is built on top of them.</em>
+          </span>
+        </li>
+        <li>
+          <i class="fas fa-shield-alt" aria-hidden="true"></i>
+          <span>
+            <strong>The builds are not code-signed yet</strong>
+            <em>macOS Gatekeeper will refuse the first launch — right-click the app and choose
+            <strong>Open</strong> to allow it. On Windows, SmartScreen shows a warning: click
+            <strong>More info → Run anyway</strong>.</em>
+          </span>
+        </li>
+        <li>
+          <i class="fab fa-windows" aria-hidden="true"></i>
+          <span>
+            <strong>Windows: the Download tab needs bash</strong>
+            <em>Downloading is driven by a shell script, so it needs WSL or Git Bash installed.
+            The Clip and Mix tabs are pure Python and work without it.</em>
+          </span>
+        </li>
+        <li>
+          <i class="fas fa-user-shield" aria-hidden="true"></i>
+          <span>
+            <strong>Nothing leaves your machine</strong>
+            <em>There is no account, no server and no telemetry in the app. Files are read and
+            written only where you tell it to.</em>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===================== Install ===================== -->
+  <section id="install">
+    <div class="wrap">
+      <h2 class="section-title">Installing</h2>
+      <p class="section-sub">Pick your platform.</p>
+
+      <div class="tabs" role="tablist">
+        <button class="tab-button active" data-tab="install-macos" onclick="showTab('install-macos', this)">macOS</button>
+        <button class="tab-button" data-tab="install-windows" onclick="showTab('install-windows', this)">Windows</button>
+        <button class="tab-button" data-tab="install-linux" onclick="showTab('install-linux', this)">Linux</button>
+      </div>
+
+      <div id="install-macos" class="tab-content active">
+        <div class="steps">
+          <ol>
+            <li>Install the two helpers if you do not have them:
+              <span class="cmd">brew install ffmpeg yt-dlp</span>
+            </li>
+            <li>Download the <code>.dmg</code> and open it.</li>
+            <li>Drag <strong>Video Tools</strong> into your Applications folder.</li>
+            <li>The first time, right-click the app and choose <strong>Open</strong>, then confirm —
+              this is only needed once, because the build is not notarised yet.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div id="install-windows" class="tab-content">
+        <div class="steps">
+          <ol>
+            <li>Install the two helpers if you do not have them:
+              <span class="cmd">winget install Gyan.FFmpeg yt-dlp.yt-dlp</span>
+            </li>
+            <li>Download the <code>.zip</code> and extract it anywhere — there is no installer to run.</li>
+            <li>Launch <code>video-tools.exe</code>. If SmartScreen appears, choose
+              <strong>More info → Run anyway</strong>.</li>
+            <li>For the Download tab, make sure WSL or
+              <a href="https://git-scm.com/download/win" target="_blank" rel="noopener">Git Bash</a>
+              is installed.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div id="install-linux" class="tab-content">
+        <div class="steps">
+          <ol>
+            <li>Install the two helpers if you do not have them:
+              <span class="cmd">sudo apt install ffmpeg
+pip install --upgrade yt-dlp</span>
+            </li>
+            <li>Download the <code>.tar.gz</code> and unpack it:
+              <span class="cmd">tar -xzf video-tools-*-linux.tar.gz</span>
+            </li>
+            <li>Run the <code>video-tools</code> binary inside. Optionally copy the bundled
+              <code>.desktop</code> file into <code>~/.local/share/applications/</code> to get a
+              launcher entry.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Fine print ===================== -->
+  <div class="wrap">
+    <p class="fineprint">
+      Video Tools is a personal project and is not affiliated with, endorsed by or connected to
+      YouTube or Google. Please only download or re-use material you own or otherwise have the
+      right to, and respect the terms of the site you are downloading from and the rights of the
+      people who made the video.
+      <br><br>
+      <a href="/">← Back to all tools</a>
+    </p>
+  </div>
+
+  <!-- ===================== Footer ===================== -->
+  <footer>
+    <p class="mb-2">&copy; 2025 Shammas Oliyath. All rights reserved.</p>
+    <nav>
+      <a href="/privacy-policy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms of Service</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </footer>
+
+  <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });" aria-label="Back to top">⬆️</button>
+
+  <script>
+    /* ------------------------------------------------------------------
+       Release config — the only thing to edit when the builds are ready.
+       1. Set available: true
+       2. Point `base` at wherever the files are hosted (a GitHub release,
+          or a /yt-download/downloads/ folder in this repo)
+       3. Fill in each file's `size` (optional; hidden when empty)
+       ------------------------------------------------------------------ */
+    const RELEASE = {
+      version: '1.0.0',
+      available: false,
+      base: 'https://github.com/mshammas/video-tools/releases/download/v1.0.0/',
+      files: {
+        macos:   { file: 'video-tools-1.0.0-macos.dmg',    label: 'Download for macOS',   size: '' },
+        windows: { file: 'video-tools-1.0.0-windows.zip',  label: 'Download for Windows', size: '' },
+        linux:   { file: 'video-tools-1.0.0-linux.tar.gz', label: 'Download for Linux',   size: '' }
+      }
+    };
+
+    const OS_NAMES = { macos: 'macOS', windows: 'Windows', linux: 'Linux' };
+
+    function toggleDarkMode() {
+      const html = document.documentElement;
+      const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+      html.dataset.theme = next;
+      try { localStorage.setItem('theme', next); } catch (e) { /* private mode */ }
+    }
+
+    function showTab(tabId, button) {
+      document.querySelectorAll('#install .tab-button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#install .tab-content').forEach(t => t.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      if (button) button.classList.add('active');
+    }
+
+    function detectOS() {
+      const ua = navigator.userAgent || '';
+      const platform = (navigator.userAgentData && navigator.userAgentData.platform)
+        || navigator.platform || '';
+      const hay = platform + ' ' + ua;
+      if (/Android/i.test(ua)) return null;          // no desktop build for phones
+      if (/iPhone|iPad|iPod/i.test(hay)) return null;
+      if (/Win/i.test(hay)) return 'windows';
+      if (/Mac/i.test(hay)) return 'macos';
+      if (/Linux|X11|CrOS/i.test(hay)) return 'linux';
+      return null;
+    }
+
+    function renderDownloads() {
+      document.getElementById('version-badge').textContent = 'Version ' + RELEASE.version;
+
+      const detected = detectOS();
+      const line = document.getElementById('detected-line');
+
+      if (detected) {
+        line.textContent = 'Looks like you are on ' + OS_NAMES[detected] + '.';
+      } else {
+        line.textContent = 'Video Tools is a desktop app — open this page on a Mac, Windows or Linux computer to install it.';
+      }
+
+      document.querySelectorAll('.dl-card').forEach(card => {
+        const os = card.dataset.os;
+        const info = RELEASE.files[os];
+        const button = card.querySelector('[data-role="button"]');
+        const label = card.querySelector('[data-role="label"]');
+        const meta = card.querySelector('[data-role="meta"]');
+        const icon = button.querySelector('i');
+
+        if (os === detected) card.classList.add('is-detected');
+
+        if (!RELEASE.available) return;   // leave the "Coming soon" state in place
+
+        button.href = RELEASE.base + info.file;
+        button.removeAttribute('aria-disabled');
+        button.setAttribute('download', '');
+        label.textContent = info.label;
+        icon.className = 'fas fa-download';
+        meta.textContent = meta.textContent + (info.size ? ' · ' + info.size : '');
+        button.addEventListener('click', () => {
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'download', {
+              event_category: 'Video Tools',
+              event_label: os,
+              app_version: RELEASE.version
+            });
+          }
+        });
+      });
+
+      if (RELEASE.available) {
+        const note = document.getElementById('release-note');
+        if (note) note.style.display = 'none';
+      }
+
+      // Move the card for the detected OS to the front of the grid.
+      if (detected) {
+        const grid = document.querySelector('.download-grid');
+        const card = grid.querySelector('.dl-card[data-os="' + detected + '"]');
+        if (card) grid.prepend(card);
+
+        // ...and open the matching Install tab.
+        const tabButton = document.querySelector('#install .tab-button[data-tab="install-' + detected + '"]');
+        if (tabButton) showTab('install-' + detected, tabButton);
+      }
+    }
+
+    window.addEventListener('scroll', () => {
+      document.getElementById('backToTop').style.display = window.scrollY > 200 ? 'block' : 'none';
+    });
+
+    renderDownloads();
+  </script>
+
+  <!-- Register Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js').catch(err => {
+        console.error('Service Worker registration failed', err);
+      });
+    }
+  </script>
+</body>
+</html>
