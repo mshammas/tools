@@ -927,20 +927,46 @@ pip install --upgrade yt-dlp</span>
       return { version: version, available: true, base: '', files: files };
     }
 
+    /* How long a cached lookup is trusted without asking again. Long enough
+       that reloading a page a few times costs one request, short enough that
+       a tab open across a release catches up on its next load. */
+    const CACHE_TTL_MS = 10 * 60 * 1000;
+
+    function readCachedRelease() {
+      try {
+        const raw = sessionStorage.getItem('vt-latest-release');
+        if (!raw) return null;
+        const entry = JSON.parse(raw);
+        // Entries written before this cache carried a timestamp are still
+        // worth painting, but are never treated as fresh.
+        const release = (entry && entry.release) ? entry.release : entry;
+        if (!release || !release.version) return null;
+        return { release: release, fresh: Date.now() - ((entry && entry.ts) || 0) < CACHE_TTL_MS };
+      } catch (e) {
+        return null;                         // private mode, or junk in storage
+      }
+    }
+
+    function cacheRelease(release) {
+      try {
+        sessionStorage.setItem('vt-latest-release',
+                               JSON.stringify({ ts: Date.now(), release: release }));
+      } catch (e) { /* storage full or unavailable: nothing to do */ }
+    }
+
     async function showLatestRelease() {
       if (!RELEASE.available) return;        // kill switch wins over live data
 
-      try {                                  // one lookup per tab, not per page view
-        const cached = sessionStorage.getItem('vt-latest-release');
-        if (cached) {
-          const release = JSON.parse(cached);
-          if (release && release.version) {
-            CURRENT = release;
-            applyRelease(release);
-            return;
-          }
-        }
-      } catch (e) { /* private mode, or junk in storage: just fetch */ }
+      // Paint what the tab already knows first, so a reload does not flicker --
+      // but then still check. sessionStorage outlives a release, and a tab that
+      // cached one went on serving that version, and its download links, for as
+      // long as it stayed open.
+      const cached = readCachedRelease();
+      if (cached) {
+        CURRENT = cached.release;
+        applyRelease(cached.release);
+        if (cached.fresh) return;
+      }
 
       let data;
       try {
@@ -958,9 +984,7 @@ pip install --upgrade yt-dlp</span>
 
       CURRENT = release;
       applyRelease(release);
-      try {
-        sessionStorage.setItem('vt-latest-release', JSON.stringify(release));
-      } catch (e) { /* storage full or unavailable: nothing to do */ }
+      cacheRelease(release);
     }
 
     window.addEventListener('scroll', () => {
