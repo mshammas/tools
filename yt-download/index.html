@@ -611,9 +611,10 @@
           <i class="fas fa-cube" aria-hidden="true"></i>
           <span>
             <strong>ffmpeg and yt-dlp are not bundled</strong>
-            <em>The app looks for both on your system when it starts and points you at the right
-            install command for your platform (Homebrew, apt, winget or pip). Everything the app
-            does is built on top of them.</em>
+            <em>The app checks for both and offers to fetch them for you the first time a tab
+            needs them — through Homebrew, apt, winget or pip where one of those is available,
+            and otherwise by downloading the projects' own prebuilt binaries. Everything the
+            app does is built on top of them.</em>
           </span>
         </li>
         <li>
@@ -631,9 +632,10 @@
         <li>
           <i class="fab fa-windows" aria-hidden="true"></i>
           <span>
-            <strong>Windows: the Download tab needs bash</strong>
-            <em>Downloading is driven by a shell script, so it needs WSL or Git Bash installed.
-            The Clip and Mix tabs are pure Python and work without it.</em>
+            <strong>Windows needs nothing beyond those two</strong>
+            <em>Downloading used to run through a shell script, so earlier versions asked for
+            WSL or Git Bash. Every tab is now plain Python inside the app — if you installed
+            Git Bash only for this, you no longer need it.</em>
           </span>
         </li>
         <li>
@@ -699,10 +701,8 @@
               marks everything inside it as came-from-the-internet. Then extract it anywhere;
               there is no installer to run.</li>
             <li>Launch <code>video-tools.exe</code>. If SmartScreen appears, choose
-              <strong>More info → Run anyway</strong>.</li>
-            <li>For the Download tab, make sure WSL or
-              <a href="https://git-scm.com/download/win" target="_blank" rel="noopener">Git Bash</a>
-              is installed.</li>
+              <strong>More info → Run anyway</strong>. That is all — no WSL and no Git Bash,
+              which earlier versions needed for the Download tab.</li>
           </ol>
         </div>
       </div>
