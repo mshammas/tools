@@ -749,13 +749,18 @@ pip install --upgrade yt-dlp</span>
 
   <script>
     /* ------------------------------------------------------------------
-       Release config. To publish a new version: tag the video-tools repo
-       (the Build installers workflow attaches the three files to the
-       release), then bump `version` here and update each file name and
-       size to match the new release's assets.
+       Release config. On load the page asks GitHub for the latest release
+       and takes the version, links and sizes from there, so tagging the
+       video-tools repo is all that publishing a new version takes.
+
+       What stays here is the fallback: it is what crawlers and anyone with
+       JavaScript off see, and what remains on the page if GitHub is
+       unreachable or rate-limiting. Worth refreshing now and then so it
+       does not drift far behind, but it no longer has to be exact.
 
        Setting `available: false` puts every card back into the
-       "Coming soon" state, e.g. while a release is being rebuilt.
+       "Coming soon" state, e.g. while a release is being rebuilt. The
+       fetch honours it, so it still works as a kill switch.
        ------------------------------------------------------------------ */
     const RELEASE = {
       version: '1.0.4',
@@ -769,6 +774,21 @@ pip install --upgrade yt-dlp</span>
     };
 
     const OS_NAMES = { macos: 'macOS', windows: 'Windows', linux: 'Linux' };
+
+    // Whichever release the page is currently showing: RELEASE above until the
+    // fetch below replaces it. Read it, don't read RELEASE, for anything the
+    // live data should win over.
+    let CURRENT = RELEASE;
+
+    const LATEST_API = 'https://api.github.com/repos/mshammas/video-tools/releases/latest';
+
+    // Match assets by shape, not by exact name, so a naming tweak in the build
+    // does not quietly leave a card pointing at the wrong file.
+    const ASSET_PATTERNS = {
+      macos:   /-macos\.dmg$/i,
+      windows: /-windows\.zip$/i,
+      linux:   /-linux\.tar\.gz$/i
+    };
 
     function toggleDarkMode() {
       const html = document.documentElement;
@@ -797,9 +817,29 @@ pip install --upgrade yt-dlp</span>
       return null;
     }
 
-    function renderDownloads() {
-      document.getElementById('version-badge').textContent = 'Version ' + RELEASE.version;
+    /* Everything that depends on WHICH release we are showing. Safe to call
+       again when the fetch brings newer data: it assigns rather than appends,
+       and keeps the card's own meta text in a data attribute so the size can
+       be re-rendered without stacking up. */
+    function applyRelease(release) {
+      document.getElementById('version-badge').textContent = 'Version ' + release.version;
+      if (!release.available) return;          // "Coming soon" state stays put
 
+      document.querySelectorAll('.dl-card').forEach(card => {
+        const info = release.files[card.dataset.os];
+        if (!info) return;
+        const button = card.querySelector('[data-role="button"]');
+        const label = card.querySelector('[data-role="label"]');
+        const meta = card.querySelector('[data-role="meta"]');
+
+        button.href = info.url || (release.base + info.file);
+        label.textContent = info.label;
+        if (meta.dataset.base === undefined) meta.dataset.base = meta.textContent.trim();
+        meta.textContent = meta.dataset.base + (info.size ? ' \u00b7 ' + info.size : '');
+      });
+    }
+
+    function renderDownloads() {
       const detected = detectOS();
       const line = document.getElementById('detected-line');
 
@@ -811,32 +851,28 @@ pip install --upgrade yt-dlp</span>
 
       document.querySelectorAll('.dl-card').forEach(card => {
         const os = card.dataset.os;
-        const info = RELEASE.files[os];
         const button = card.querySelector('[data-role="button"]');
-        const label = card.querySelector('[data-role="label"]');
-        const meta = card.querySelector('[data-role="meta"]');
         const icon = button.querySelector('i');
 
         if (os === detected) card.classList.add('is-detected');
 
         if (!RELEASE.available) return;   // leave the "Coming soon" state in place
 
-        button.href = RELEASE.base + info.file;
         button.removeAttribute('aria-disabled');
         button.setAttribute('download', '');
-        label.textContent = info.label;
         icon.className = 'fas fa-download';
-        meta.textContent = meta.textContent + (info.size ? ' · ' + info.size : '');
         button.addEventListener('click', () => {
           if (typeof gtag !== 'undefined') {
             gtag('event', 'download', {
               event_category: 'Video Tools',
               event_label: os,
-              app_version: RELEASE.version
+              app_version: CURRENT.version      // the version actually offered
             });
           }
         });
       });
+
+      applyRelease(RELEASE);
 
       if (RELEASE.available) {
         const note = document.getElementById('release-note');
@@ -855,11 +891,81 @@ pip install --upgrade yt-dlp</span>
       }
     }
 
+    /* ------------------------------------------------------------------
+       Take the version, links and sizes from the latest GitHub release so
+       this page does not need editing on every tag.
+
+       It is strictly an upgrade on top of the fallback above: every failure
+       path — offline, rate-limited (the API allows 60 requests an hour per
+       IP unauthenticated), no releases yet, a release missing one of the
+       three installers — returns early and leaves the rendered page alone.
+       ------------------------------------------------------------------ */
+    function sizeLabel(bytes) {
+      return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+
+    function releaseFromApi(data) {
+      const version = String((data && data.tag_name) || '').replace(/^v/i, '');
+      if (!version) return null;
+
+      const files = {};
+      for (const os of Object.keys(ASSET_PATTERNS)) {
+        const asset = (data.assets || []).find(a => ASSET_PATTERNS[os].test(a.name || ''));
+        // A part-built release would leave a card pointing nowhere, so take
+        // all three or none and let the fallback stand.
+        if (!asset || !asset.browser_download_url) return null;
+        files[os] = {
+          file: asset.name,
+          url: asset.browser_download_url,
+          label: RELEASE.files[os].label,
+          size: asset.size ? sizeLabel(asset.size) : ''
+        };
+      }
+      return { version: version, available: true, base: '', files: files };
+    }
+
+    async function showLatestRelease() {
+      if (!RELEASE.available) return;        // kill switch wins over live data
+
+      try {                                  // one lookup per tab, not per page view
+        const cached = sessionStorage.getItem('vt-latest-release');
+        if (cached) {
+          const release = JSON.parse(cached);
+          if (release && release.version) {
+            CURRENT = release;
+            applyRelease(release);
+            return;
+          }
+        }
+      } catch (e) { /* private mode, or junk in storage: just fetch */ }
+
+      let data;
+      try {
+        const response = await fetch(LATEST_API, {
+          headers: { 'Accept': 'application/vnd.github+json' }
+        });
+        if (!response.ok) return;            // 403 rate limit, 404 no releases
+        data = await response.json();
+      } catch (e) {
+        return;                              // offline, blocked, CORS
+      }
+
+      const release = releaseFromApi(data);
+      if (!release) return;
+
+      CURRENT = release;
+      applyRelease(release);
+      try {
+        sessionStorage.setItem('vt-latest-release', JSON.stringify(release));
+      } catch (e) { /* storage full or unavailable: nothing to do */ }
+    }
+
     window.addEventListener('scroll', () => {
       document.getElementById('backToTop').style.display = window.scrollY > 200 ? 'block' : 'none';
     });
 
     renderDownloads();
+    showLatestRelease();
   </script>
 
   <!-- Register Service Worker -->
