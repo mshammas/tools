@@ -619,8 +619,9 @@
             <strong>The builds are not signed with a developer certificate</strong>
             <em>macOS blocks the first launch with <strong>“Apple could not verify…”</strong>.
             On macOS 15 and later there is no right-click → Open bypass any more, so the
-            Installing steps below clear it instead — one command, or a toggle in System
-            Settings. On Windows, SmartScreen shows a warning: click
+            Installing steps below clear the flag on the disk image before you install —
+            one command, or a toggle in System Settings if you have already installed it.
+            On Windows, SmartScreen shows a warning: click
             <strong>More info → Run anyway</strong>.</em>
           </span>
         </li>
@@ -662,16 +663,22 @@
             <li>Install the two helpers if you do not have them:
               <span class="cmd">brew install ffmpeg yt-dlp</span>
             </li>
-            <li>Open the <code>.dmg</code> and drag <strong>Video Tools</strong> onto the
-              <strong>Applications</strong> folder next to it. You can eject the disk image
-              afterwards.</li>
-            <li>The app is not notarised by Apple, so macOS blocks the first launch. Clear the
-              download flag once and it opens normally from then on:
-              <span class="cmd">xattr -dr com.apple.quarantine "/Applications/Video Tools.app"</span>
+            <li>The app is not notarised by Apple, so macOS flags the download and blocks the
+              first launch. Clear that flag on the <code>.dmg</code> <strong>before</strong> you
+              install, and nothing it contains inherits it:
+              <span class="cmd">xattr -d com.apple.quarantine ~/Downloads/video-tools-*-macos.dmg</span>
             </li>
-            <li>Rather not use Terminal? Try to open the app, click <strong>Done</strong>, then
-              go to <strong>System Settings → Privacy &amp; Security</strong>, scroll to
-              <strong>Security</strong> and click <strong>Open Anyway</strong>.</li>
+            <li>Open the <code>.dmg</code> and drag <strong>Video Tools</strong> onto the
+              <strong>Applications</strong> folder next to it. It now opens normally. You can
+              eject the disk image afterwards.</li>
+            <li>Already dragged it across first? Then clear the flag through
+              <strong>System Settings</strong> instead: try to open the app, click
+              <strong>Done</strong>, then go to <strong>System Settings → Privacy &amp;
+              Security</strong>, scroll to <strong>Security</strong> and click
+              <strong>Open Anyway</strong>. Running the command above against the copy in
+              <code>/Applications</code> will not work — macOS protects installed apps from
+              being modified, and answers <code>Operation not permitted</code> even under
+              <code>sudo</code>.</li>
           </ol>
         </div>
       </div>
